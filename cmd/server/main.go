@@ -1,7 +1,20 @@
 package main
 
-import "fmt"
+import (
+	"log/slog"
+
+	"printing-management-system/config"
+	"printing-management-system/internal/logger"
+)
 
 func main() {
-	fmt.Println("PORTEX API")
+	appConfig := config.LoadConfig()
+	appLogger := logger.NewLogger()
+
+	appLogger.Info(
+		"application starting",
+		slog.String("appName", appConfig.AppName),
+		slog.String("environment", appConfig.AppEnv),
+		slog.String("port", appConfig.AppPort),
+	)
 }
