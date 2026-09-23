@@ -1,0 +1,28 @@
+package database
+
+import (
+	"fmt"
+
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+
+	"printing-management-system/config"
+)
+
+func ConnectDatabase(appConfig *config.Config) (*gorm.DB, error) {
+	dsn := fmt.Sprintf(
+		"%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		appConfig.DbUser,
+		appConfig.DbPassword,
+		appConfig.DbHost,
+		appConfig.DbPort,
+		appConfig.DbName,
+	)
+
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		return nil, fmt.Errorf("failed to connect to database: %w", err)
+	}
+
+	return db, nil
+}
